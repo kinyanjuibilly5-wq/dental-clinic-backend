@@ -17,13 +17,18 @@ router.post('/login', async (req, res) => {
       res.json({ token, user: payload.user });
     });
   } catch (err) {
+    console.error(err);
     res.status(500).send('Server error');
   }
 });
 
 router.get('/dentists', async (req, res) => {
-  const dentists = await User.find({ role: 'dentist' });
-  res.json(dentists);
+  try {
+    const users = await User.find({ role: 'dentist' });
+    res.json(users.map(u => ({ badge: u.badge, name: u.name })));
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
 });
 
 router.get('/seed', async (req, res) => {
@@ -32,7 +37,7 @@ router.get('/seed', async (req, res) => {
     const hashed = await bcrypt.hash('password123', 10);
     await User.create({ name: 'Dr. Smith', badge: 'D001', password: hashed, role: 'dentist' });
     await User.create({ name: 'Nurse Anna', badge: 'N001', password: hashed, role: 'nurse' });
-    res.send('? Users created');
+    res.send('✅ Users created. Login with D001 / password123');
   } catch (err) {
     res.status(500).send('Error seeding: ' + err.message);
   }
