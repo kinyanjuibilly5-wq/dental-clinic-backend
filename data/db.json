@@ -1,17 +1,17 @@
 {
   "users": [
     {
-      "_id": "1780680083264",
+      "_id": "1780685626175",
       "name": "Dr. Smith",
       "badge": "D001",
-      "password": "$2b$10$kFKfMeak45ab8ysXm/6iDO.JwU6CvWybqjQv6ARAsjX0Ztcw1JEA.",
+      "password": "$2b$10$LC1EZRmjGjxaZOAxOxU9iuK2DLJBc4ooqzDeEXbweZi/tM9/Fxf6G",
       "role": "dentist"
     },
     {
-      "_id": "1780680083265",
+      "_id": "1780685626176",
       "name": "Nurse Anna",
       "badge": "N001",
-      "password": "$2b$10$kFKfMeak45ab8ysXm/6iDO.JwU6CvWybqjQv6ARAsjX0Ztcw1JEA.",
+      "password": "$2b$10$LC1EZRmjGjxaZOAxOxU9iuK2DLJBc4ooqzDeEXbweZi/tM9/Fxf6G",
       "role": "nurse"
     }
   ],
