@@ -1,15 +1,18 @@
-﻿const express = require('express');
+const express = require('express');
 const auth = require('../middleware/auth');
 const Payment = require('../models/Payment');
 const Appointment = require('../models/Appointment');
 const router = express.Router();
 
+// Record a payment (requires authentication)
 router.post('/', auth, async (req, res) => {
   try {
     const { appointmentId, amount, method } = req.body;
     const appointment = await Appointment.findById(appointmentId);
     if (!appointment) return res.status(404).json({ msg: 'Appointment not found' });
-    const payment = await Payment.create({ appointmentId, amount, method, date: new Date().toISOString() });
+
+    const payment = new Payment({ appointment: appointmentId, amount, method });
+    await payment.save();
     res.json(payment);
   } catch (err) {
     console.error(err);
@@ -17,9 +20,14 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// Get all payments (for reports)
 router.get('/', auth, async (req, res) => {
-  const payments = await Payment.find();
-  res.json(payments);
+  try {
+    const payments = await Payment.find().populate('appointment');
+    res.json(payments);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
 });
 
 module.exports = router;
