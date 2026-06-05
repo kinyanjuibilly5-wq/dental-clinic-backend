@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "_id": "1780680083264",
+      "name": "Dr. Smith",
+      "badge": "D001",
+      "password": "$2b$10$kFKfMeak45ab8ysXm/6iDO.JwU6CvWybqjQv6ARAsjX0Ztcw1JEA.",
+      "role": "dentist"
+    },
+    {
+      "_id": "1780680083265",
+      "name": "Nurse Anna",
+      "badge": "N001",
+      "password": "$2b$10$kFKfMeak45ab8ysXm/6iDO.JwU6CvWybqjQv6ARAsjX0Ztcw1JEA.",
+      "role": "nurse"
+    }
+  ],
+  "clients": [
+    {
+      "_id": "1780678055410",
+      "name": "John Doe",
+      "phone": "07123456789"
+    }
+  ],
+  "appointments": [
+    {
+      "_id": "1780678055411",
+      "clientId": "1780678055410",
+      "dentistId": "1780677806498",
+      "date": "1999-02-25",
+      "time": "10:50",
+      "notes": "",
+      "status": "scheduled"
+    }
+  ],
+  "payments": [
+    {
+      "_id": "1780678076460",
+      "appointmentId": "1780678055411",
+      "amount": "25000",
+      "method": "card",
+      "date": "2026-06-05T16:47:56.460Z"
+    }
+  ]
+}
