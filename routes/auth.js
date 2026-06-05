@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
-// POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { badge, password } = req.body;
   try {
@@ -12,14 +11,7 @@ router.post('/login', async (req, res) => {
     if (!user) return res.status(400).json({ msg: 'Invalid credentials' });
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
-    const payload = {
-      user: {
-        id: user.id,
-        role: user.role,
-        name: user.name,
-        badge: user.badge
-      }
-    };
+    const payload = { user: { id: user.id, role: user.role, name: user.name, badge: user.badge } };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' }, (err, token) => {
       if (err) throw err;
       res.json({ token, user: payload.user });
@@ -30,7 +22,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/dentists – list all dentists (for booking dropdown)
 router.get('/dentists', async (req, res) => {
   try {
     const dentists = await User.find({ role: 'dentist' }).select('badge name');
@@ -40,7 +31,7 @@ router.get('/dentists', async (req, res) => {
   }
 });
 
-// TEMPORARY SEED ROUTE – remove after seeding
+// TEMPORARY SEED ROUTE – run this once to populate the database
 router.get('/seed', async (req, res) => {
   try {
     await User.deleteMany();
