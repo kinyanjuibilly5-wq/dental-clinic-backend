@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
+// POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { badge, password } = req.body;
   try {
@@ -13,7 +14,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
     const payload = {
       user: {
-        id: user._id,
+        id: user.id,
         role: user.role,
         name: user.name,
         badge: user.badge
@@ -29,12 +30,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
-module.exports = router;
+// GET /api/auth/dentists – list all dentists (for booking dropdown)
+router.get('/dentists', async (req, res) => {
+  try {
+    const dentists = await User.find({ role: 'dentist' }).select('badge name');
+    res.json(dentists);
+  } catch (err) {
+    res.status(500).send('Server error');
+  }
+});
 
 // TEMPORARY SEED ROUTE – remove after seeding
 router.get('/seed', async (req, res) => {
-  const bcrypt = require('bcryptjs');
-  const User = require('../models/User');
   try {
     await User.deleteMany();
     const hashed = await bcrypt.hash('password123', 10);
@@ -44,6 +51,9 @@ router.get('/seed', async (req, res) => {
     ]);
     res.send('✅ Users created. You can now login with D001 / password123');
   } catch (err) {
+    console.error(err);
     res.status(500).send('Error seeding: ' + err.message);
   }
 });
+
+module.exports = router;
